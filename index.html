@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang=fr dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Projet Transition ARMANDO Julien</title>
+  <script type="text/javascript" src="transition/transition.js"></script>
+  <script>document.addEventListener("DOMContentLoaded",function(){initFrag()})</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript" src="./scripts/quizz.js"></script>
+  <link rel="stylesheet" type="text/css" href="transition/transition.css">
+  <link rel="stylesheet" type="text/css" href="styles/quizz.css">
+</head>
+<body id="slides">
+  <section>
+    <div>
+    <p class="title">Bienvenue dans cette présentation faite avec transition.js</p>
+  </div>
+    <p class="hidden" fragments="{hidden}">Commençons par afficher quelques images</p>
+    <div>
+      <img id="naruto" class="hidden" src="./images/naruto.jpg" fragments="{hidden}">
+    </div>
+    <p id="toHide" class="hidden" fragments="{hidden} +1 [naruto]{multiclonage}">Une seule image ?? J'avais pourtant dis "quelques"</p>
+    <p class="hidden" fragments="{hidden} +0 [toHide]{hidden}"> MULTICLONAGE !!!!!!</p>
+    <div class="hidden" fragments="+1{hidden}">
+      <img src="./images/multiclonage.jpg">
+      <img src="./images/multiclonage.jpg">
+      <img src="./images/multiclonage.jpg">
+      <img src="./images/multiclonage.jpg">
+      <img src="./images/multiclonage.jpg">
+      <img src="./images/multiclonage.jpg">
+      <img src="./images/multiclonage.jpg">
+    </div>
+    <p class="hidden" fragments="{hidden}">Ah voilà là il y a quelques images</p>
+  </section>
+  <section fragments="[slides]{--shift++} 1s">
+    <div>
+      <p class="title">Vous voyez cette deuxième slide</p>
+    </div>
+    <div id="moche" class="ugly">
+      <p class="hidden" fragments="{hidden} 1s">On est d'accord cette page est très moche n'est-ce pas ?<p>
+      <p class="hidden" fragments="{hidden} 1s">Après mes compètences en CSS ne sont pas très développées<p>
+      <p class="hidden" fragments="{hidden} 1s">Donc il est difficile pour moi de faire un truc beau<p>
+      <p class="hidden" fragments="{hidden} [moche]{ugly beautiful}">Quoi que ...<p>
+      <img class="hidden" fragments="+0{hidden}" src="./images/en_fait_non.gif" />
+  </div>
+    <p class="hidden beautiful" fragments="{hidden police}">Vous avez vraiment cru je savais faire des belles choses en CSS ptdr</p>
+    <p class="hidden beautiful" fragments="{hidden rotate}">LOLILOL</p>
+  </section>
+  <section class="quizz" fragments="[slides]{--shift++} 1s">
+    <div>
+      <p class="title">Now it's question time</p>
+    </div>
+      <p>Quand suis-je né ?</p>
+      <div class="hidden" fragments="{hidden} 1s">
+        <p class="answer false">1950</p>
+        <p class="answer false">1970</p>
+        <p class="answer false">1990</p>
+        <p class="answer true">2000</p>
+      </div>
+      <div>
+      <p class="submit hidden" fragments={hidden}>valider</p>
+      </div>
+  </section>
+  </body>
+  </html>
