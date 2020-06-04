@@ -25,9 +25,10 @@ function nextElem(c){
 	let seconds=timerList[c].getAttribute("timer");
 	log(seconds);
 	setTimeout(function(){
-		timerList[c].innerText="test";
 		c++;
-		next(c);
+		next();
+		nextElem(c);
+
 	},seconds*1000);
 }
 }

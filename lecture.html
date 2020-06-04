@@ -1,14 +1,23 @@
 <html>
 <head>
 	<script type="text/javascript" src="lecture.js"></script>
+		<script type="text/javascript" src="transition.js"></script>
 </head>
+<style>
+	.hidden{
+		opacity:0;
+	}
+	</style>
 <body>
+	<section>
 	<div id="audioContainer" timer="5"></div>
 	<script type="text/javascript">readAudio('audioContainer','test.webm')</script>
-	<div id="1" timer="5"></div>
-	<div id="2" timer="5"></div>
-	<div id="3" timer="5"></div>
-	<div id="4" timer="5"></div>
+	<div id="1" timer="5" class="hidden" fragments="{hidden} 1s">test1</div>
+	<div id="2" timer="5" class="hidden" fragments="{hidden} 1s">test2</div>
+	<div id="3" timer="5" class="hidden" fragments="{hidden} 1s">test3</div>
+	<div id="4" timer="5" class="hidden" fragments="{hidden} 1s">test4</div>
+</section>
 	<script type="text/javascript">getTimer(document)</script>
+	<script type="text/javascript">document.addEventListener("DOMContentLoaded",function(){initFrag()})</script>
 </body>
 </html>
