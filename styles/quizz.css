@@ -125,3 +125,11 @@ police {
     color:blue ;
   }
 }
+
+.bad {
+  color: #FF0000 ;
+}
+
+.good {
+  color: #00FF00 ;
+}
