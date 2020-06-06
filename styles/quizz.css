@@ -126,10 +126,10 @@ police {
   }
 }
 
-.bad {
+.incorrect {
   color: #FF0000 ;
 }
 
-.good {
+.correct {
   color: #00FF00 ;
 }
