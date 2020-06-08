@@ -256,6 +256,7 @@
 		location.hash=sectionNb;
 	}
 	_check_hash=true;
+
 	function HashChange(){
 		if(_check_hash){
 			var re=/(.*#(\d*))/
@@ -266,6 +267,7 @@
 	}
 	window.addEventListener('hashchange',HashChange);
 	var speaker=null;
+	
 	function initFrag(){
 		time=0;
 		DocFragments=getFragments(document);	// We get all the fragments of the presentation
