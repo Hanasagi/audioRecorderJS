@@ -1,6 +1,8 @@
 <html>
 <head>
+	<meta charset="UTF-8">
 	<script type="text/javascript" src="lecture.js"></script>
+	<script type="text/javascript" src="record.js"></script>
 		<script type="text/javascript" src="transition.js"></script>
 </head>
 <style>
@@ -11,12 +13,14 @@
 <body>
 	<section>
 	<div id="audioContainer"></div>
+	<p style='color:red;'>&#x2b1b;</p>
 	<script type="text/javascript">createAudioReader("audioContainer","hidden","test.webm", "","{hidden} 1s")</script>
-	<div id="1" timer="5" class="hidden" fragments="{hidden} 1s">test1</div>
+	<!--<script type="text/javascript">createRecordButton()</script>-->
+	<div id="1" class="hidden" fragments="{hidden} 1s">test1</div>
 	<div id="2" class="hidden" fragments="{hidden} 1s">test2</div>
-	<div id="3" timer="5" class="hidden" fragments="{hidden} 1s">test3</div>
-	<div id="4" timer="5" class="hidden" fragments="{hidden} 1s">test4</div>
+	<div id="3" class="hidden" fragments="{hidden} 1s">test3</div>
+	<div id="4" class="hidden" fragments="{hidden} 1s">test4</div>
 </section>
-	<script type="text/javascript">document.addEventListener("DOMContentLoaded",function(){initFrag();getTimer(document)})</script>
+	<script type="text/javascript">document.addEventListener("DOMContentLoaded",function(){initFrag();createRecordButton();})</script>
 </body>
 </html>
