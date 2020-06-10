@@ -1,5 +1,7 @@
 let timerList;
 let frag;
+let audioRecord;
+let actionRecord;
 
 function log(message) {
   console.log(message);
