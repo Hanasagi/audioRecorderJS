@@ -6,23 +6,52 @@
 		<script type="text/javascript" src="transition.js"></script>
 </head>
 <style>
+	body{
+			overflow:hidden;
+		}
 	.hidden{
 		opacity:0;
 	}
+	#slides{
+			position:absolute;
+			--slide:0;
+			top: calc(var(--slide) * (-100%));
+	}
+	section{
+			width:100vw;
+			height:100vh;
+			overflow:hidden;
+		}
 	</style>
 <body>
 	<div id="slides">
 	<section>
 	<div id="audioContainer"></div>
 	<p style='color:red;'>&#x2b1b;</p>
-	<script type="text/javascript">createAudioReader("audioContainer","hidden","test.webm", "","{hidden} 1s")</script>
+	<!--<script type="text/javascript">createAudioReader("audioContainer","hidden","test.webm", "","{hidden} 1s")</script>-->
 	<!--<script type="text/javascript">createRecordButton()</script>-->
 	<div id="1" class="hidden" fragments="{hidden} 1s">test1</div>
 	<div id="2" class="hidden" fragments="{hidden} 1s">test2</div>
 	<div id="3" class="hidden" fragments="{hidden} 1s">test3</div>
 	<div id="4" class="hidden" fragments="{hidden} 1s">test4</div>
+	<div id="5" class="hidden" fragments="{hidden} 1s">test5</div>
+	<div id="6" class="hidden" fragments="{hidden} 1s">test6</div>
+	<div id="7" class="hidden" fragments="{hidden} 1s">test7</div>
+	<div id="8" class="hidden" fragments="{hidden} 1s">test8</div>
+
 </section>
+<section fragments="[slides]{--slide++} 2s">
+	<div id="12" class="hidden" fragments="{hidden} 1s">test1</div>
+	<div id="22" class="hidden" fragments="{hidden} 1s">test2</div>
+	<div id="32" class="hidden" fragments="{hidden} 1s">test3</div>
+	<div id="42" class="hidden" fragments="{hidden} 1s">test4</div>
+	<div id="52" class="hidden" fragments="{hidden} 1s">test5</div>
+	<div id="62" class="hidden" fragments="{hidden} 1s">test6</div>
+	<div id="72" class="hidden" fragments="{hidden} 1s">test7</div>
+	<div id="82" class="hidden" fragments="{hidden} 1s">test8</div>
+
+	</section>
 </div>
-	<script type="text/javascript">document.addEventListener("DOMContentLoaded",function(){initFrag();createRecordButton();})</script>
+	<script type="text/javascript">document.addEventListener("DOMContentLoaded",function(){initFrag();createRecordnReadButton();})</script>
 </body>
 </html>

@@ -1,7 +1,9 @@
 let timerList;
 let frag;
-let audioRecord;
-let actionRecord;
+let audio;
+let action;
+let audioFile;
+let actionFile;
 
 function log(message) {
   console.log(message);
@@ -97,9 +99,28 @@ function nextElem(current) {
 
       }
     }else{
-
     		document.addEventListener('keyup',changeElem);
 
     	}
     }
   }
+
+function initPlay(audio,action){
+	let playButton = document.createElement("button");
+	playButton.addEventListener("click",function() {
+		audioPlayer.play();
+	})
+	document.addEventListener("keyup",function(e){
+		if(e.keyCode == 80){
+			audioPlayer.play();
+		}
+	});
+	let span = document.getElementById("spanPlay");
+	span.appendChild(playButton);
+	audio = URL.createObjectURL(audio);
+	let audioPlayer = document.createElement("audio")
+	audioPlayer.style.visibility="hidden";
+	audioPlayer.controls="controls";
+	audioPlayer.src=audio;
+	span.appendChild(audioPlayer)
+}
