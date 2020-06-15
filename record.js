@@ -90,7 +90,7 @@ function createDownloadLink(blob,map) {
 	audiolink.style.textDecoration="none";
 	audiolink.style.padding="0 10 0 10";
 
-	//source https://www.xul.fr/javascript/map-and-object.phphttps://www.xul.fr/javascript/map-and-object.php
+	//source https://www.xul.fr/ecmascript/map-et-objet.php
 	function mapToObjectRec(m) {
     let lo = {}
     for(let[k,v] of m) {
@@ -236,7 +236,8 @@ function createRecordnReadButton(){
 	jsonFileButton.required=true;
 	jsonFileButton.accept=".json"
 	jsonFileButton.style.padding="10 0 10 0";
-jsonFileButton.onchange= function(e){
+
+	jsonFileButton.onchange= function(e){
 		jsonFile=e.target.files[0];
 		log(jsonFile)
 	}

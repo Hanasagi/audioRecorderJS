@@ -26,25 +26,25 @@ function createAudioReader(idParent, classe, filePath, timer = "", fragments = "
 }
 
 function getTimer(element) {
-	function checkTimerBegin(event) {
-			log("testbegin")
+  function checkTimerBegin(event) {
+    log("testbegin")
     if ((event.keyCode == 13) || (event.keyCode == 32) || (event.keyCode == 40) || (event.keyCode == 34) || (event.keyCode == 39)) {
       event.preventDefault();
       log(event.keyCode)
       if (frag[time].target[0] == timerList[0]) {
         nextElem(0);
-        document.removeEventListener('keyup',checkTimerBegin);
+        document.removeEventListener('keyup', checkTimerBegin);
       }
     }
   }
   frag = getFragments(document);
   timerList = element.querySelectorAll("[timer]");
-  	if(frag[0].target[0].hasAttribute("timer"))
- 		nextElem(0)
- 	else{
- 		
- 		   document.addEventListener('keyup',checkTimerBegin);
- 		}
+  if (frag[0].target[0].hasAttribute("timer"))
+    nextElem(0)
+  else {
+
+    document.addEventListener('keyup', checkTimerBegin);
+  }
 
 
 }
@@ -66,23 +66,23 @@ function getAudioTime(currentTimedElement, element) {
 }
 
 function nextElem(current) {
-	function changeElem(event) {
+  function changeElem(event) {
     if ((event.keyCode == 13) || (event.keyCode == 32) || (event.keyCode == 40) || (event.keyCode == 34) || (event.keyCode == 39)) {
       event.preventDefault();
-      log(timerList[current])	;	
-      	log("test")
-	     nextElem(current)
-        document.removeEventListener('keyup',changeElem);
-      }
+      log(timerList[current]);
+      log("test")
+      nextElem(current)
+      document.removeEventListener('keyup', changeElem);
     }
-	
- 
-    if (current < timerList.length) {
+  }
 
-    	 if (frag[time].target[0].hasAttribute("timer")) {
-    	 	//log(timerList[current])	;	
+
+  if (current < timerList.length) {
+
+    if (frag[time].target[0].hasAttribute("timer")) {
+      //log(timerList[current])	;
       let seconds = timerList[current].getAttribute("timer");
-      log(seconds+" secondes")
+      log(seconds + " secondes")
       if (timerList[current].nodeName != "AUDIO") {
         setTimeout(function() {
           current++;
@@ -98,29 +98,89 @@ function nextElem(current) {
         }, seconds * 1000);
 
       }
-    }else{
-    		document.addEventListener('keyup',changeElem);
+    } else {
+      document.addEventListener('keyup', changeElem);
 
-    	}
     }
   }
+}
 
-function initPlay(audio,action){
-	let playButton = document.createElement("button");
-	playButton.addEventListener("click",function() {
-		audioPlayer.play();
-	})
-	document.addEventListener("keyup",function(e){
-		if(e.keyCode == 80){
-			audioPlayer.play();
-		}
-	});
-	let span = document.getElementById("spanPlay");
-	span.appendChild(playButton);
-	audio = URL.createObjectURL(audio);
-	let audioPlayer = document.createElement("audio")
-	audioPlayer.style.visibility="hidden";
-	audioPlayer.controls="controls";
-	audioPlayer.src=audio;
-	span.appendChild(audioPlayer)
+function initPlay(audio, action) {
+
+  var playButton = document.createElement("button");
+  playButton.innerText = "Play";
+  var reader = new FileReader();
+  let actionMap;
+  reader.addEventListener('load', function(e) {
+    actionMap = JSON.parse(e.target.result);
+    //source https://www.xul.fr/ecmascript/map-et-objet.php
+    function objectToMap(o) {
+    let m = new Map()
+    for(let k of Object.keys(o)) {
+        if(o[k] instanceof Object) {
+            m.set(k, objectToMap(o[k]))   
+        }
+        else {
+            m.set(k, o[k])
+        }    
+    }
+    return m
+}
+    actionMap=objectToMap(actionMap)
+    log(actionMap)
+    document.addEventListener("keyup", function(e) {
+      if (e.keyCode == 80) {
+        playRecord(audioPlayer, actionMap);
+      }
+    });
+    playButton.addEventListener("click", function() {
+      playRecord(audioPlayer, actionMap);
+    });
+  });
+  reader.readAsBinaryString(action);
+  let span = document.getElementById("spanPlay");
+  span.appendChild(playButton);
+  audio = URL.createObjectURL(audio);
+  let audioPlayer = document.createElement("audio")
+  audioPlayer.style.visibility = "hidden";
+  audioPlayer.controls = "controls";
+  audioPlayer.src = audio;
+  span.appendChild(audioPlayer)
+}
+
+let audioDuration=0;
+function playRecord(audioPlayer, actionMap) {
+  audioPlayer.play();
+
+  let audioObject = new Audio(audioPlayer.src);
+
+   audioObject.currentTime = 10000;
+   audioObject.addEventListener('timeupdate', e=> {
+      log(audioObject.duration)
+      setAudioDuration(audioObject.duration);
+    });
+  let currentTime=0;
+  actionTimer = setInterval(function(){
+    currentTime++;
+    if(actionMap.get(""+currentTime)!=undefined){
+        switch(actionMap.get(""+currentTime)){
+          case "next":
+            next();
+            break;
+          case "prev":
+            prev();
+            break;
+          case "jump":
+            jump();
+            break;
+        }
+    }else if(currentTime>=audioDuration){
+      clearInterval(actionTimer);
+      log("End.")
+    }
+  },1000);
+
+}
+function setAudioDuration(duration){
+  audioDuration=duration;
 }
