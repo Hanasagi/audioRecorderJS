@@ -4,6 +4,7 @@ let audio;
 let action;
 let audioFile;
 let actionFile;
+let pageURL;
 
 function log(message) {
   console.log(message);
@@ -27,7 +28,6 @@ function createAudioReader(idParent, classe, filePath, timer = "", fragments = "
 
 function getTimer(element) {
   function checkTimerBegin(event) {
-    log("testbegin")
     if ((event.keyCode == 13) || (event.keyCode == 32) || (event.keyCode == 40) || (event.keyCode == 34) || (event.keyCode == 39)) {
       event.preventDefault();
       log(event.keyCode)
@@ -109,37 +109,80 @@ function initPlay(audio, action) {
 
   var playButton = document.createElement("button");
   playButton.innerText = "Play";
+  var pauseButton = document.createElement("button");
+  pauseButton.innerText = "Pause";
+  pauseButton.disabled = true;
+  var stopButton = document.createElement("button");
+  stopButton.innerText = "Stop";
+  stopButton.disabled = true;
   var reader = new FileReader();
   let actionMap;
+  if(typeof audio == "object"){
   reader.addEventListener('load', function(e) {
     actionMap = JSON.parse(e.target.result);
     //source https://www.xul.fr/ecmascript/map-et-objet.php
     function objectToMap(o) {
-    let m = new Map()
-    for(let k of Object.keys(o)) {
-        if(o[k] instanceof Object) {
-            m.set(k, objectToMap(o[k]))   
+      let m = new Map()
+      for (let k of Object.keys(o)) {
+        if (o[k] instanceof Object) {
+          m.set(k, objectToMap(o[k]))
+        } else {
+          m.set(k, o[k])
         }
-        else {
-            m.set(k, o[k])
-        }    
+      }
+      return m
     }
-    return m
-}
-    actionMap=objectToMap(actionMap)
+    actionMap = objectToMap(actionMap)
     log(actionMap)
     document.addEventListener("keyup", function(e) {
       if (e.keyCode == 80) {
         playRecord(audioPlayer, actionMap);
+        pauseButton.disabled = false;
+        stopButton.disabled = false;
+        playButton.disabled = true;
+      } else if (e.keyCode == 81) {
+        if (pauseButton.innerText == "Pause") {
+          pauseButton.innerText = "Resume";
+          pauseRecord(audioPlayer, actionMap);
+        } else {
+          pauseButton.innerText = "Pause";
+          resumeRecord(audioPlayer, actionMap);
+        }
+      } else if (e.keyCode == 83) {
+        stopRecord(audioPlayer, actionMap);
+        playButton.disabled = false;
+        pauseButton.disabled = true;
+        stopButton.disabled = true;
       }
     });
     playButton.addEventListener("click", function() {
       playRecord(audioPlayer, actionMap);
+      pauseButton.disabled = false;
+      stopButton.disabled = false;
+      playButton.disabled = true;
+    });
+    pauseButton.addEventListener("click", function() {
+      if (pauseButton.innerText == "Pause") {
+        pauseButton.innerText = "Resume";
+        pauseRecord(audioPlayer, actionMap);
+      } else {
+        pauseButton.innerText = "Pause";
+        resumeRecord(audioPlayer, actionMap);
+      }
+    });
+    stopButton.addEventListener("click", function() {
+      stopRecord(audioPlayer, actionMap);
+      playButton.disabled = false;
+      pauseButton.disabled = true;
+      stopButton.disabled = true;
     });
   });
   reader.readAsBinaryString(action);
+}
   let span = document.getElementById("spanPlay");
   span.appendChild(playButton);
+  span.appendChild(pauseButton);
+  span.appendChild(stopButton);
   audio = URL.createObjectURL(audio);
   let audioPlayer = document.createElement("audio")
   audioPlayer.style.visibility = "hidden";
@@ -148,39 +191,61 @@ function initPlay(audio, action) {
   span.appendChild(audioPlayer)
 }
 
-let audioDuration=0;
+let audioDuration = 0;
+let currentTime = 0;
+
 function playRecord(audioPlayer, actionMap) {
   audioPlayer.play();
 
   let audioObject = new Audio(audioPlayer.src);
 
-   audioObject.currentTime = 10000;
-   audioObject.addEventListener('timeupdate', e=> {
-      log(audioObject.duration)
-      setAudioDuration(audioObject.duration);
-    });
-  let currentTime=0;
-  actionTimer = setInterval(function(){
-    currentTime++;
-    if(actionMap.get(""+currentTime)!=undefined){
-        switch(actionMap.get(""+currentTime)){
-          case "next":
-            next();
-            break;
-          case "prev":
-            prev();
-            break;
-          case "jump":
-            jump();
-            break;
-        }
-    }else if(currentTime>=audioDuration){
-      clearInterval(actionTimer);
-      log("End.")
-    }
-  },1000);
+  audioObject.currentTime = 10000;
+  audioObject.addEventListener('timeupdate', e => {
+    setAudioDuration(audioObject.duration);
+  });
+
+  startInterval(audioPlayer, actionMap);
 
 }
-function setAudioDuration(duration){
-  audioDuration=duration;
+
+function pauseRecord(audioPlayer, actionMap) {
+  audioPlayer.pause()
+  clearInterval(actionTimer)
+}
+
+function resumeRecord(audioPlayer, actionMap) {
+  audioPlayer.play();
+  startInterval(audioPlayer, actionMap);
+}
+
+function stopRecord(audioPlayer, actionMap) {
+  audioPlayer.pause();
+  currentTime = audioPlayer.currentTime = 0;
+  clearInterval(actionTimer);
+  log("End.")
+}
+
+function setAudioDuration(duration) {
+  audioDuration = duration;
+}
+
+function startInterval(audioPlayer, actionMap) {
+  actionTimer = setInterval(function() {
+    currentTime++;
+    if (actionMap.get("" + currentTime) != undefined) {
+      switch (actionMap.get("" + currentTime)) {
+        case "next":
+          next();
+          break;
+        case "prev":
+          prev();
+          break;
+        case "jump":
+          jump();
+          break;
+      }
+    } else if (currentTime >= audioDuration) {
+      stopRecord(audioPlayer, actionMap);
+    }
+  }, 1000);
 }

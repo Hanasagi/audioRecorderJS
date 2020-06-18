@@ -12,6 +12,7 @@ let recordInterval;
 let timingMap=new Map();
 let fragList;
 
+
 if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')){
 	extension="webm";
 }else{
@@ -68,7 +69,7 @@ function startRecord(){
 	    	});
 }
 
-function stopRecord(){
+function stopRecording(){
 	let info = document.getElementById("infoRecord");
 	recorder.stop();
 	clearInterval(recordInterval);
@@ -118,7 +119,7 @@ function createDownloadLink(blob,map) {
 	document.getElementById("infoRecord").appendChild(jsonlink);
 }
 
-function createRecordnReadButton(){
+function createRecordBar(){
 
 	let div = document.createElement("div");
 	div.style.position='fixed';
@@ -137,13 +138,75 @@ function createRecordnReadButton(){
 	span.style.display="block";
 	span.style.padding="0 10 0 5";
 
-	
+	let chooseURLspan = document.createElement("span")
+	chooseURLspan.style.position='relative';
+	chooseURLspan.style.top="0";
+	chooseURLspan.style.display="none";
+	chooseURLspan.style.padding="0 10 0 5";
+
+	let typeChooserSpan = document.createElement("span")
+	typeChooserSpan.style.width="5rem";
+	typeChooserSpan.style.position='relative';
+	typeChooserSpan.style.top="0";
+	typeChooserSpan.style.display="none";
+	typeChooserSpan.style.padding="0 15 0 15";
+
+	let chooseFileText = document.createElement("p");
+	chooseFileText.innerText="File";
+	chooseFileText.style.float="left";
+	chooseFileText.style.color="red";
+	chooseFileText.addEventListener('click',function(){
+			fileChooseSpan.style.display="flex";
+			chooseURLspan.style.display="none";
+			chooseURLText.style.color="white";
+			chooseFileText.style.color="red";
+	});
+	let chooseURLText = document.createElement("p");
+	chooseURLText.innerText="URL";
+	chooseURLText.style.float="right";
+		chooseURLText.addEventListener("click",function(){
+		chooseFileText.style.color="white";
+		chooseURLText.style.color="red";
+		chooseURLspan.style.display="block";
+		fileChooseSpan.style.display="none";
+	})
+	typeChooserSpan.appendChild(chooseFileText)
+	typeChooserSpan.appendChild(chooseURLText)
+
+	let URLform= document.createElement("form")
+	URLform.addEventListener("submit",function(e){
+		e.preventDefault();
+			let newURL=window.location.href+"?audio="+inputAudioURL.value+"?action="+inputActionURL.value;
+		window.history.pushState(null, null, newURL);
+		//initPlay(audioFile,jsonFile);
+		
+	})
+	let inputAudioURL = document.createElement("input");
+	inputAudioURL.type="text"
+	inputAudioURL.required=true;
+	inputAudioURL.placeholder="Enter Audio File URL (.webm)"
+	inputAudioURL.style.padding="10 0 10 0"
+
+	let inputActionURL = document.createElement("input");
+	inputActionURL.type="text"
+	inputActionURL.required=true;
+	inputActionURL.placeholder="Enter Action File URL (.json)"
+	inputActionURL.style.padding="10 0 10 0"
+
+	let submitURLfile = document.createElement("input");
+	submitURLfile.type="submit";
+
+	URLform.appendChild(inputAudioURL)
+	URLform.appendChild(inputActionURL)
+	URLform.appendChild(submitURLfile)
+	chooseURLspan.appendChild(URLform);
+
 	let recordText = document.createElement("p");
 	recordText.innerText="Record";
 	recordText.style.float="left";
 	recordText.style.color="red";
 	recordText.addEventListener('click',function(){
-			playSpan.style.display="none";
+			fileChooseSpan.style.display="none";
 			recordSpan.style.display="flex";
 			playText.style.color="white";
 			recordText.style.color="red";
@@ -155,7 +218,8 @@ function createRecordnReadButton(){
 		playText.addEventListener("click",function(){
 		recordText.style.color="white";
 		playText.style.color="red";
-		playSpan.style.display="flex";
+		fileChooseSpan.style.display="flex";
+		typeChooserSpan.style.display="block";
 		recordSpan.style.display="none";
 	})
 	span.appendChild(recordText)
@@ -177,7 +241,7 @@ function createRecordnReadButton(){
 	stop.style.color="red";
 	stop.style.padding="0 5 0 5";
 
-	stop.addEventListener('click',stopRecord);
+	stop.addEventListener('click',stopRecording);
 	stop.addEventListener('mouseover',function(){
 		stop.style.color="#d63031";
 	});
@@ -202,10 +266,10 @@ function createRecordnReadButton(){
 	info.style.padding="0 5 0 5";
 
 	//PLAY
-	let playSpan = document.createElement("span");
-	playSpan.style.display="none";
-	playSpan.id="spanPlay"
-	playSpan.style.position="relative";
+	let fileChooseSpan = document.createElement("span");
+	fileChooseSpan.style.display="none";
+	fileChooseSpan.id="spanPlay"
+	fileChooseSpan.style.position="relative";
 
 	let audioFile;
 	let jsonFile;
@@ -214,6 +278,7 @@ function createRecordnReadButton(){
 	form.addEventListener("submit",function(e){
 		e.preventDefault();
 		initPlay(audioFile,jsonFile);
+		
 	})
 	let submit = document.createElement("input");
 	submit.type="submit";
@@ -227,7 +292,6 @@ function createRecordnReadButton(){
 	audioFileButton.style.padding="10 0 10 0";
 	audioFileButton.onchange= function(e){
 		audioFile=e.target.files[0];
-		log(audioFile)
 	}
 	
 	let jsonFileButton = document.createElement("input");
@@ -239,21 +303,22 @@ function createRecordnReadButton(){
 
 	jsonFileButton.onchange= function(e){
 		jsonFile=e.target.files[0];
-		log(jsonFile)
 	}
 
 	form.appendChild(audioFileButton);
 	form.appendChild(jsonFileButton);
 	form.appendChild(submit)
-	playSpan.appendChild(form);
+	fileChooseSpan.appendChild(form);
 
 	recordSpan.appendChild(record)
 	recordSpan.appendChild(pause);
 	recordSpan.appendChild(stop);
 	recordSpan.appendChild(info);
 	div.appendChild(span)
+	div.appendChild(typeChooserSpan)
 	div.appendChild(recordSpan);
-	div.appendChild(playSpan);
+	div.appendChild(fileChooseSpan);
+	div.appendChild(chooseURLspan);
 	document.body.appendChild(div)
 
 }
