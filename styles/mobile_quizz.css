@@ -1,0 +1,28 @@
+.mobile_buttons {
+  display: none ;
+}
+
+@media screen and (min-width: 200px) and (max-width: 550px) {
+
+  .mobile_buttons {
+    display: block !important ;
+  }
+}
+
+.btn-right,
+.btn-left {
+  position: fixed ;
+  padding: 10px;
+  border-radius: 50px;
+  background: #fff;
+}
+
+.btn-right {
+  bottom: 50px ;
+  right: 50px ;
+}
+
+.btn-left {
+  bottom: 50px ;
+  left: 50px ;
+}

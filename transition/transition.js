@@ -75,7 +75,7 @@
 					toggle class1
 					increment attribute1
 					decrement attribute2
-					
+
 		 	From the time step (time_step+1 to time_step)
 					toggle class1 and class2 to element_id
 					substract class3 values of the properties of class3 to element_id.style
@@ -95,11 +95,11 @@
 					if(Properties[2]!=null)
 						{fragment[j].time=parseInt(Properties[2]);}
 					else {current_time++; fragment[j].time=current_time;}}
-				else 
+				else
 					if(Properties[1]=="+") {fragment[j].time=current_time+parseInt(Properties[2]);}
 			 		else
 			 		if(Properties[1]=="-") {fragment[j].time=current_time-parseInt(Properties[2]);}
-			 		else  
+			 		else
 			 			{current_time++; fragment[j].time=current_time;}
 				fragmentElements[i].time=fragment[j].time;
 			 	// ------------------ duration -------------- //
@@ -151,7 +151,7 @@
 				el.addEventListener('click',next);
 			} else {
 				el.classList.add("inactive");
-				el.removeEventListener('click',next); // Ca n'existe pas :( :( :( 
+				el.removeEventListener('click',next); // Ca n'existe pas :( :( :(
 			}
 		if(el=document.getElementById("arrowUp"))
 		{
@@ -303,12 +303,12 @@
 				{	// Navigate out
 					window.scrollTo(0,0);
 					let sections=document.getElementsByTagName("section");
-					for(let section of sections) 
+					for(let section of sections)
 						section.removeEventListener("click",jump);
-					
+
 				}
 			}
-			
+
 			// 13,32,40,34 (return/space/arrow down/Arrow down/arrow left))
 			if ((event.keyCode==13) || (event.keyCode==32) || (event.keyCode==40)|| (event.keyCode==34)|| (event.keyCode==39)){
 				event.preventDefault();
