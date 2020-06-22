@@ -31,6 +31,9 @@ const correctAnswerMessage = "Bonne réponse" ;
 // Message if the given answer is incorrect
 const incorrectAnswerMessage = "Mauvaise réponse" ;
 
+// Path to all the PHP files default to "../stats/"
+const statsPath = "../stats/" ;
+
 var allquiz ;
 var allAnswers = [] ;
 var isRated = false ;
@@ -44,7 +47,7 @@ $(document).ready(function() {
     isRated = true ;
     // We initialize the database
     let json = JSON.stringify({action: "init"}) ;
-    ajaxCall("../stats/database_handler.php", json) ;
+    ajaxCall(statsPath + "database_handler.php", json) ;
   }
 
   for(var i = 0; i < allquiz.length; i++) {
@@ -55,7 +58,7 @@ $(document).ready(function() {
       // If the quizs are rated, we save the question and the id of the quiz to the database
       var question = currentQuiz.find('.'+questionClassName)[0] ;
       let json = JSON.stringify({id: i, question: question.innerText}) ;
-      ajaxCall('../stats/insert_quiz.php', json) ;
+      ajaxCall(statsPath + '/insert_quiz.php', json) ;
     }
 
     // We fill the answers array depending on the current quiz
@@ -65,7 +68,7 @@ $(document).ready(function() {
       if(isRated) {
         // We save on the database the answers (only if the quizs are rated)
         let json = JSON.stringify({id: i, answer: answers[j].innerText}) ;
-        ajaxCall('../stats/insert_answers.php', json) ;
+        ajaxCall(statsPath + 'insert_answers.php', json) ;
       }
       // We browse through all the answers in the current quiz to add it to the allAnswers array and delete the HTML class to prevent users from seeing the correct answers
       // The array will have this form :
@@ -123,7 +126,7 @@ $('.'+submitClassName).on('click', function() {
       if(isRated) {
         // Loop to save all selected responses in the database
         let json = JSON.stringify({id: quizID, selected: selectedAnswersText}) ;
-        ajaxCall('../stats/update_answers.php', json) ;
+        ajaxCall(statsPath + 'update_answers.php', json) ;
         // If the quizs are rated, we show the result button
         showResultButton($(this)) ;
       }
@@ -156,7 +159,7 @@ $('.'+submitClassName).on('click', function() {
       if(isRated) {
         // Save the selected response in the database
         let json = JSON.stringify({id: quizID, selected: selectedAnswerText}) ;
-        ajaxCall('../stats/update_answers.php', json) ;
+        ajaxCall(statsPath + 'update_answers.php', json) ;
         // If the quizs are rated, we show the result button
         showResultButton($(this)) ;
       }
@@ -175,11 +178,10 @@ $('.'+submitClassName).on('click', function() {
 }) ;
 
 $('.'+deleteDatabaseClassName).on('click', function() {
-  console.log("Delete") ;
   // We delete the database
   if(isRated) {
     let json = JSON.stringify({action: "delete"}) ;
-    ajaxCall("../stats/database_handler.php", json) ;
+    ajaxCall(statsPath + "database_handler.php", json) ;
   }
 }) ;
 
@@ -200,7 +202,7 @@ function showResults() {
 
   let getData = axios({
     method: 'POST',
-    url: '../stats/get_answers_count.php',
+    url: statsPath + 'get_answers_count.php',
     data: {id: currentSection.getAttribute('data-quiz')},
   })
   .then(function (response) {

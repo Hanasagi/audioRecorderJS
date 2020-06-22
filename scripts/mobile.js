@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  console.log("Mobile_quizz.js a bien démarré") ;
+  console.log("mobile.js is running !") ;
 
   $('.btn-right').on('click', function() {
     var event = new KeyboardEvent('keydown', {'keyCode':39}) ;
