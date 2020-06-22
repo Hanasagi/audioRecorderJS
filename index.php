@@ -17,8 +17,8 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <link rel="stylesheet" type="text/css" href="transition/transition.css">
-  <link rel="stylesheet" type="text/css" href="styles/quizz.css">
-  <link rel="stylesheet" type="text/css" href="styles/mobile_quizz.css">
+  <link rel="stylesheet" type="text/css" href="styles/quiz.css">
+  <link rel="stylesheet" type="text/css" href="styles/mobile.css">
 </head>
 <body id="slides" class="rated">
   <section>
@@ -56,7 +56,7 @@
     <p class="hidden beautiful" fragments="{hidden police}">Vous avez vraiment cru je savais faire des belles choses en CSS ptdr</p>
     <p class="hidden beautiful" fragments="{hidden rotate}">LOLILOL</p>
   </section>
-  <section class="quizz" fragments="[slides]{--shift++} 1s">
+  <section class="quiz" fragments="[slides]{--shift++} 1s">
     <div>
       <p class="title">Now it's question time</p>
     </div>
@@ -75,7 +75,7 @@
       <p class="submit hidden" fragments={hidden}>valider</p>
     </div>
   </section>
-  <section class="quizz qcm" fragments="[slides]{--shift++} 1s">
+  <section class="quiz mcq" fragments="[slides]{--shift++} 1s">
     <div>
       <p class="title">Now it's question time</p>
     </div>
@@ -94,6 +94,16 @@
     <div>
       <p class="delete">Recharger la base de données</p>
     </div>
+  </section>
+  <section class="quiz mcq">
+    <p class="question">2 + 2 is ?</p>
+    <div>
+      <p class="answer true">4</p>
+      <p class="answer false">8</p>
+      <p class="answer true">(3 * 5) / 2 + 4 * 26 - ((2 * 50) + 7.5)</p>
+      <p class="answer false">90</p>
+    </div>
+    <p class="submit">Submit</p>
   </section>
   <span class="mobile_buttons">
     <div class="btn-left">

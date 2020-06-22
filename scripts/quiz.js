@@ -1,6 +1,8 @@
 // All the config variables
 // Class name for the quiz default to "quiz"
-const quizClassName = "quizz" ;
+const quizClassName = "quiz" ;
+// Class name for the mcq quiz default to "mcq"
+const mcqClassName = "mcq" ;
 // Class name for the question default to "question"
 const questionClassName = "question" ;
 // Class name for the answers default to "answer"
@@ -88,7 +90,7 @@ $(document).ready(function() {
 $('.'+answerClassName).on('click', function() {
   if(!$(this)[0].className.includes('selected')) {
     $(this).addClass('selected') ;
-    if(!($(this).closest('section')[0].className.includes('qcm'))) $('.selected').not(this).removeClass('selected') ;
+    if(!($(this).closest('section')[0].className.includes(mcqClassName))) $('.selected').not(this).removeClass('selected') ;
   }
   else $(this).removeClass('selected') ;
 }) ;
@@ -105,7 +107,7 @@ $('.'+submitClassName).on('click', function() {
   var currentQuiz = allquiz[quizID] ;
 
   // Handling different responses if it is a MCQ
-  if(currentQuiz.className.includes('qcm')) {
+  if(currentQuiz.className.includes(mcqClassName)) {
     // Here, we retrieve an array of selected answers
     var selectedAnswers = $('.selected') ;
 
