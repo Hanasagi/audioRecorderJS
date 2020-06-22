@@ -9,7 +9,7 @@
   <script>document.addEventListener("DOMContentLoaded",function(){initFrag()})</script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script type="text/javascript" src="./scripts/quizz.js"></script>
+  <script type="text/javascript" src="./scripts/quiz.js"></script>
   <script type="text/javascript" src="./scripts/mobile.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
