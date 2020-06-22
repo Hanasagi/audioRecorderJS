@@ -12,7 +12,7 @@ To use this script, you'll need first to install the transition.js script. When 
 
 For the local version, you only need HTML and quiz.js script. To create a quiz, you have to add "quiz" class name on each `<section>` tag. Warning, if it's a MCQ, you also need to add "mcq" as class name. Now your section should look like this : `<section class="quiz">` or like this for a MCQ : `<section class="quiz mcq">`. Once this is done, you can add a `<p>` tag with the class "question" that will contain the title of the question. Then, for each answer you just have to add a `<p>` tag with "answer true" or "answer false" (depending if the answer is true or not) as class name. Finally, put an other `<p>` tag with class name "submit" and your quiz is ready. Your code should look like :
 <br>
-![an example of quiz](./images/quiz_example.png) <br> or like this for a MCQ :
+![an example of quiz](./images/quiz_example.png) <br> or like this for a MCQ : <br>
 ![an example of MCQ](./images/mcq_example.png)
 
 ### The online version :
