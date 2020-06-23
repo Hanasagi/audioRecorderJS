@@ -14,8 +14,31 @@ Don't forget to include the line `<script type='text/javascript' src='./scripts/
 
 For the local version, you only need HTML and quiz.js script. To create a quiz, you have to add "quiz" class name on each `<section>` tag. Warning, if it's a MCQ, you also need to add "mcq" as class name. Now your section should look like this&nbsp;: `<section class="quiz">` or like this for a MCQ&nbsp;: `<section class="quiz mcq">`. Once this is done, you can add a `<p>` tag with the class "question" that will contain the title of the question. Then, for each answer you just have to add a `<p>` tag with "answer true" or "answer false" (depending if the answer is true or not) as class name. Finally, put an other `<p>` tag with class name "submit" and your quiz is ready. Your code should look like&nbsp;:
 <br>
-![an example of quiz](./images/quiz_example.png) <br> or like this for a MCQ&nbsp;: <br>
-![an example of MCQ](./images/mcq_example.png)
+```HTML
+<section class="quiz">
+  <p class="question">On which script is based quiz.js ?</p>
+  <div>
+    <p class="answer false">42.js</p>
+    <p class="answer true">transition.js</p>
+    <p class="answer false">idontknow.js</p>
+    <p class="answer false">kojima.js</p>
+  </div>
+  <p class="submit">Submit</p>
+</section>
+```
+or like this for a MCQ&nbsp;: <br>
+```HTML
+<section class="quiz mcq">
+  <p class="question">2 + 2 is ?</p>
+  <div>
+    <p class="answer true">4</p>
+    <p class="answer false">8</p>
+    <p class="answer true">(3 * 5) / 2 + 4 * 26 - ((2 * 50) + 7.5)</p>
+    <p class="answer false">90</p>
+  </div>
+  <p class="submit">Submit</p>
+</section>
+```
 
 ### The online version&nbsp;:
 
@@ -77,7 +100,7 @@ Finally, the last EventListener serves to deselect the selected answers when we 
 
 ## Credits&nbsp;:
 
-This script was entirely done by ARMANDO Julien as part of individual projects led by the IUT of Nice during the health crisis that affected the whole world. Here the link to access IUT website&nbsp;: <http://unice.fr/iut/presentation/accueil>
+This script was entirely done by ARMANDO Julien as part of individual projects led by the IUT of Nice during the pandemic that affected the whole world. Here the link to access IUT website&nbsp;: <http://unice.fr/iut/presentation/accueil>
 
 The displayed charts are made by another script called Chart.js and available here&nbsp;: <https://www.chartjs.org/>
 

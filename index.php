@@ -95,16 +95,6 @@
       <p class="delete">Recharger la base de données</p>
     </div>
   </section>
-  <section class="quiz mcq">
-    <p class="question">2 + 2 is ?</p>
-    <div>
-      <p class="answer true">4</p>
-      <p class="answer false">8</p>
-      <p class="answer true">(3 * 5) / 2 + 4 * 26 - ((2 * 50) + 7.5)</p>
-      <p class="answer false">90</p>
-    </div>
-    <p class="submit">Submit</p>
-  </section>
   <span class="mobile_buttons">
     <div class="btn-left">
       <svg style="width:24px;height:24px" viewBox="0 0 24 24">
