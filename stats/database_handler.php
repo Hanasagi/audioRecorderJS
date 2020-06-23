@@ -19,19 +19,22 @@ try {
 
     $sql2 = "CREATE TABLE IF NOT EXISTS quiz (
       id_quiz INT PRIMARY KEY,
-      question VARCHAR(100)
+      question VARCHAR(100),
+      alreadyVoted int default 0
     )" ;
 
     $db->exec($sql) ;
     $db->exec($sql2) ;
     break ;
 
-    case 'delete':
-    $sql = "DROP TABLE answers" ;
-    $sql2 = "DROP TABLE quiz" ;
+    case 'reload':
+    $sql = $db->prepare("UPDATE answers SET COUNT = 0 WHERE id_quiz = :id") ;
+    $sql->bindParam(":id", $data['id']) ;
+    $sql->execute() ;
 
-    $db->exec($sql) ;
-    $db->exec($sql2) ;
+    $sql2 = $db->prepare("UPDATE quiz SET alreadyVoted = ((SELECT alreadyVoted FROM quiz WHERE id_quiz = :id) + 1) WHERE id_quiz = :id") ;
+    $sql2->bindParam(":id", $data['id']) ;
+    $sql2->execute() ;
     break;
   }
 } catch(PDOException $e) {

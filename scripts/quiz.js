@@ -21,15 +21,17 @@ const incorrectAnswerSelectedClassName = "" ;
 const showResultClassName = "show_results" ;
 // Class name for the chart container default to "chart-container"
 const chartContainerClassName = "chart-container" ;
-// Class name for the button which resets the database default to "delete"
-const deleteDatabaseClassName = "delete" ;
+// Class name for the button which reload votes count on database
+const reloadDatabaseClassName = "reload" ;
 
 // Message for the show_result button
-const showResultsMessage = "Voir les résultats" ;
+const showResultsMessage = "Show results" ;
+// Message for the reload vote button
+const reloadVotesMessage = "Reload votes" ;
 // Message if the given answer is correct
-const correctAnswerMessage = "Bonne réponse" ;
+const correctAnswerMessage = "Correct answer" ;
 // Message if the given answer is incorrect
-const incorrectAnswerMessage = "Mauvaise réponse" ;
+const incorrectAnswerMessage = "Wrong answer" ;
 
 // Path to all the PHP files default to "../stats/"
 const statsPath = "../stats/" ;
@@ -37,11 +39,36 @@ const statsPath = "../stats/" ;
 var allquiz ;
 var allAnswers = [] ;
 var isRated = false ;
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 
 $(document).ready(function() {
   console.log("quiz.js is running !") ;
 
   allquiz = $('.'+quizClassName) ;
+
+  if(urlParams.get('presenter_mode') === 'true') {
+    $('.' + submitClassName).remove() ;
+    for(var i = 0; i < allquiz.length; i++) {
+      var newDiv = document.createElement("div") ;
+
+      var reloadButtonPara = document.createElement( "p" );
+      reloadButtonPara.setAttribute( 'class', reloadDatabaseClassName);
+      reloadButtonPara.innerText = reloadVotesMessage ;
+
+      newDiv.append(reloadButtonPara) ;
+
+      var showResultPara = document.createElement( "p" );
+      showResultPara.setAttribute( 'class', showResultClassName);
+      showResultPara.innerText = showResultsMessage ;
+
+      newDiv.append(showResultPara) ;
+      showResultPara.addEventListener('click', function(e) { showResults(e) }) ;
+
+      allquiz[i].append(newDiv) ;
+    }
+  }
+
   // Check if the ratedClassName is set to the tag <body>, if yes, it will start the PHP files
   if($('body')[0].className.includes(ratedClassName)) {
     isRated = true ;
@@ -127,8 +154,6 @@ $('.'+submitClassName).on('click', function() {
         // Loop to save all selected responses in the database
         let json = JSON.stringify({id: quizID, selected: selectedAnswersText}) ;
         ajaxCall(statsPath + 'update_answers.php', json) ;
-        // If the quizs are rated, we show the result button
-        showResultButton($(this)) ;
       }
       // Count the correct number of answers for the current quiz
       var totalCorrectAnswers = countCorrectAnswers(quizID) ;
@@ -160,8 +185,6 @@ $('.'+submitClassName).on('click', function() {
         // Save the selected response in the database
         let json = JSON.stringify({id: quizID, selected: selectedAnswerText}) ;
         ajaxCall(statsPath + 'update_answers.php', json) ;
-        // If the quizs are rated, we show the result button
-        showResultButton($(this)) ;
       }
       // Check with the variable allAnswers if the position corresponds to  'true ' then the selected response is correct otherwise it is false
       switch(allAnswers[quizID][answerPosition]) {
@@ -177,10 +200,13 @@ $('.'+submitClassName).on('click', function() {
   }
 }) ;
 
-$('.'+deleteDatabaseClassName).on('click', function() {
-  // We delete the database
+$('.'+reloadDatabaseClassName).on('click', function(event) {
+  var target = event.target ;
+  var quizID = target.closest('section').getAttribute('data-quiz') ;
+
+  // We reload the vote for the current Id
   if(isRated) {
-    let json = JSON.stringify({action: "delete"}) ;
+    let json = JSON.stringify({action: "reload", id: quizID}) ;
     ajaxCall(statsPath + "database_handler.php", json) ;
   }
 }) ;
@@ -188,12 +214,12 @@ $('.'+deleteDatabaseClassName).on('click', function() {
 }) ;
 
 // Function to show the results after clicking show result button
-function showResults() {
+function showResults(event) {
 
   var alreadyExist = $('.'+chartContainerClassName)[0] ;
   if(alreadyExist !== undefined) alreadyExist.remove() ;
 
-  var currentSection = $('.'+showResultClassName)[0].closest('section') ;
+  var currentSection = event.target.closest('section') ;
 
   var newPara = document.createElement("div") ;
   newPara.setAttribute('class', chartContainerClassName) ;
@@ -234,20 +260,20 @@ function countCorrectAnswers(quizID) {
 // Function to show the correct message
 function answerIsCorrect(currentQuiz) {
   if(correctAnswerSelectedClassName !== "") {
-    var newPara = document.createElement( "div" );
-    newPara.setAttribute( 'class', correctAnswerSelectedClassName);
-    newPara.innerHTML = "<p>" + correctAnswerMessage + "</p>";
-    currentQuiz.appendChild(newPara);
+    var isCorrectDiv = document.createElement( "div" );
+    isCorrectDiv.setAttribute( 'class', correctAnswerSelectedClassName);
+    isCorrectDiv.innerHTML = "<p>" + correctAnswerMessage + "</p>";
+    currentQuiz.appendChild(isCorrectDiv);
   }
 }
 
 // Function to show the incorrect message
 function answerIsIncorrect(currentQuiz) {
   if(incorrectAnswerSelectedClassName) {
-    var newPara = document.createElement( "div" );
-    newPara.setAttribute( 'class', incorrectAnswerSelectedClassName);
-    newPara.innerHTML = "<p>" + incorrectAnswerMessage + "</p>";
-    currentQuiz.appendChild(newPara);
+    var isIncorrectDiv = document.createElement( "div" );
+    isIncorrectDiv.setAttribute( 'class', incorrectAnswerSelectedClassName);
+    isIncorrectDiv.innerHTML = "<p>" + incorrectAnswerMessage + "</p>";
+    currentQuiz.appendChild(isIncorrectDiv);
   }
 }
 
@@ -260,17 +286,17 @@ function getAnswerPosition(selectedAnswer, quizID) {
   }
 }
 
-// Function to show the result button
-function showResultButton(submitButton) {
-  var alreadyExist = $('.'+showResultClassName)[0] ;
-  if(alreadyExist != undefined) alreadyExist.remove() ;
-
-  var newPara = document.createElement( "p" );
-  newPara.setAttribute( 'class', showResultClassName);
-  newPara.innerText = showResultsMessage;
-  submitButton.parent().append(newPara);
-  newPara.addEventListener('click', showResults) ;
-}
+// // Function to show the result button
+// function showResultButton(submitButton) {
+//   var alreadyExist = $('.'+showResultClassName)[0] ;
+//   if(alreadyExist != undefined) alreadyExist.remove() ;
+//
+//   var showResultPara = document.createElement( "p" );
+//   showResultPara.setAttribute( 'class', showResultClassName);
+//   showResultPara.innerText = showResultsMessage;
+//   submitButton.parent().append(showResultPara);
+//   showResultPara.addEventListener('click',function(e) { showResults(e) }) ;
+// }
 
 // Function to check if the user has already answered the question
 function checkIfAlreadyAnswered() {
