@@ -64,5 +64,35 @@ Once everything is in place, you can click on the submit button, and new things 
 <img src="https://puu.sh/FZdFH/1f574acea9.png"/><br> You have, once again, the classical button, **Start**, **Pause/
 Resume** and **Stop**, you can either click on them or use **P** to play, **Q** to pause/resume and **S** to stop.<br>
 The sliding bar helps to keep track on the time, and you can also go back to another time if you didn't understand something in the record.
+If you do not wish to record everything, there is a way to add your own audio files (and add transition.js functions too) without making it yourself (not entirely).
+You will also be able to add timer to your html elements.
+
+In order to do so, you need to add this in your html file : 
+
+```JS
+document.addEventListener("DOMContentLoaded",function(){
+		getTimer(document);
+	})	
+```
+
+You can add the getTimer(document) function in the same event listener as before.
+
+Once this is done, you can now add timer to your html element, like this : 
+
+```HTML
+<div id="test" class="hidden" timer="6" fragments="{hidden} 1s"></div>
+```
+
+You can combine this with the transition script so that your element will appear add the end of the X seconds you entered in the timer attribute.
+If you wish to add an audio reader, you can call this function :
+```JS
+<script type="text/javascript">createAudioReader(idParent, class, filePath, timer, fragments)</script>
+```
+
+Replace each attribute in the bracket to suits your need, you can do this for example
+```JS
+<script type="text/javascript">createAudioReader("test", "hidden", "./test.webm", "6", "{hidden} 1s")</script>
+```
+
 
 This project is licensed under the <a href="https://opensource.org/licenses/mit-license.php">MIT License</a>.
