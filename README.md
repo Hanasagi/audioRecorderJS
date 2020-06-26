@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
 ---
 
-<h4>How to use record and read functions<h4>
+<h4>How to use record and read functions</h4>
 
 Now that everything is setup, load your page and at the bottom of it, you'll see an arrow, click on it and you'll see something like this:
 
@@ -73,7 +73,7 @@ The sliding bar helps to keep track on the time, and you can also go back to ano
 
 ---
 
-<h4>How to use timer functions & add audio reader<h4>
+<h4>How to use timer functions & add audio reader</h4>
 
 If you do not wish to record everything, there is a way to add your own audio files (And add transition.js functions too) without making it yourself (not entirely).
 You will also be able to add timer to your HTML elements.
