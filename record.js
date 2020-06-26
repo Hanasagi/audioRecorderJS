@@ -149,7 +149,7 @@ function createRecordBar() {
    			</span>
    			<span id="spanPlayFile" style="display: none; position: relative;">
       			<form id="formFile">
-         			<input type="file" id="audioFile" accept=".webm" required style="padding: 10px 0px;">
+         			<input type="file" id="audioFile" accept=".webm,.ogg" required style="padding: 10px 0px;">
          			<input type="file" id="jsonFile" required accept=".json" style="padding: 10px 0px;">
          			<input type="submit">
       			</form>

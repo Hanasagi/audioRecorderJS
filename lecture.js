@@ -214,7 +214,7 @@ function initPlay(audio, action, fileInUrl = false) {
       pauseButton.disabled = true;
       stopButton.disabled = true;
     });
-    log(document.body.contains(document.getElementById("timeSlider")))
+
       if(!document.body.contains(document.getElementById("timeSlider"))){
   timeSlider = document.createElement("input")
   timeSlider.type = "range"
