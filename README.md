@@ -280,4 +280,4 @@ However, if the files are loaded by a URL, the action file cannot be read by the
 <h1>Credits</h1>
 
 This project was a part of a school project to replace end-of-study internship in the <a href="http://unice.fr/en">University of Nice-Sophia</a>.
-<br>This project is licensed under the <a href="https://opensource.org/licenses/mit-license.php">MIT License</a>.
+<br>It is licensed under the <a href="https://opensource.org/licenses/mit-license.php">MIT License</a>.
