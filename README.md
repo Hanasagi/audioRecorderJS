@@ -206,7 +206,6 @@ For the action file, it's a little bit more complicated:
 let jsonlink = document.createElement('a');
 
 function mapToObjectRec(m) {
-    //let data={};
     let lo = {}
     for (let [k, v] of m) {
       if (v instanceof Map) {
