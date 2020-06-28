@@ -84,7 +84,6 @@ function nextElem(current) {
   if (current < timerList.length) {
 
     if (frag[time].target[0].hasAttribute("timer")) {
-      //log(timerList[current])	;
       let seconds = timerList[current].getAttribute("timer");
       log(seconds + " secondes")
       if (timerList[current].nodeName != "AUDIO") {
@@ -111,17 +110,22 @@ function nextElem(current) {
 
 function initPlay(audio, action, fileInUrl = false) {
   isActionAString = false;
+
   if(typeof action == "string")
     isActionAString=true;
+if(!document.body.contains(document.getElementById("playButton"))){
   var playButton = document.createElement("button");
   playButton.innerText = "Play";
+  playButton.id="playButton";
   var pauseButton = document.createElement("button");
   pauseButton.innerText = "Pause";
   pauseButton.disabled = true;
+    pauseButton.id="pauseButton";
   var stopButton = document.createElement("button");
   stopButton.innerText = "Stop";
   stopButton.disabled = true;
-
+  stopButton.id="stopButton";
+}
   //source https://www.xul.fr/ecmascript/map-et-objet.php
   function objectToMap(o) {
     let m = new Map()
@@ -143,6 +147,7 @@ function initPlay(audio, action, fileInUrl = false) {
     actionMap = objectToMap(actionMap)
     createButton();
   });
+
   if (typeof action == "string" && typeof audio == "string") {
     let stringJSON = $.getJSON(action, function(data) {
       action = data;
@@ -155,6 +160,7 @@ function initPlay(audio, action, fileInUrl = false) {
     reader.readAsBinaryString(action);
     audio = URL.createObjectURL(audio);
   }
+
 
   let fileSpan = document.getElementById("spanPlayFile");
   let urlSpan = document.getElementById("spanPlayUrl");
@@ -215,7 +221,7 @@ function initPlay(audio, action, fileInUrl = false) {
       stopButton.disabled = true;
     });
 
-      if(!document.body.contains(document.getElementById("timeSlider"))){
+  if(!document.body.contains(document.getElementById("timeSlider"))){
   timeSlider = document.createElement("input")
   timeSlider.type = "range"
   timeSlider.min = "0"
@@ -227,7 +233,7 @@ function initPlay(audio, action, fileInUrl = false) {
 
   if(!document.body.contains(document.getElementById("timeSlider")))
   sliderValue=document.createElement("output");
-  
+
     if (isActionAString && fileInUrl === false) {
       urlSpan.appendChild(playButton);
       urlSpan.appendChild(pauseButton);
@@ -245,7 +251,6 @@ function initPlay(audio, action, fileInUrl = false) {
     } else {
       $("body").append(`
         <div id="readDiv" style="position: fixed; bottom: 0px; left: 0px; background-color: rgb(35, 39, 42); height: 50px; width: 100vw; color: white; display: flex; transition: all 1s ease-out 0s;">
-
         </div>
         `)
       let readDiv = document.getElementById("readDiv");
@@ -295,8 +300,20 @@ function setAudioDuration(duration) {
 }
 
 function startInterval(audioPlayer, actionMap) {
+      audioPlayer.addEventListener("ended",function(){
+       let playButton = document.getElementById("playButton");
+      let pauseButton = document.getElementById("pauseButton");
+      let stopButton = document.getElementById("stopButton");
+      pauseButton.disabled = true;
+      stopButton.disabled = true;
+      playButton.disabled = false;
+      stopRecord(audioPlayer, actionMap);
+     
+    });
   actionTimer = setInterval(function() {
+    if(timestamp == currentTime){
     currentTime++;
+    }
     timestamp++;
     timeSlider.value=timestamp;
     sliderValue.innerText=timestamp;
@@ -305,7 +322,7 @@ function startInterval(audioPlayer, actionMap) {
       sliderValue.innerText=timeSlider.value;
       timestamp=timeSlider.value;
     })
-
+    if(timestamp == currentTime){
     if (actionMap.get("" + currentTime) != undefined) {
       switch (actionMap.get("" + currentTime)) {
         case "next":
@@ -318,8 +335,7 @@ function startInterval(audioPlayer, actionMap) {
           jump();
           break;
       }
-    } else if (currentTime >= audioDuration) {
-      stopRecord(audioPlayer, actionMap);
-    }
+    } 
+  }
   }, 1000);
 }

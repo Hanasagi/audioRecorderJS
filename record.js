@@ -11,6 +11,7 @@ let stream;
 let recordInterval;
 let timingMap = new Map();
 let fragList;
+let keyupHandling;
 
 
 if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
@@ -55,19 +56,22 @@ function startRecord() {
     //action
     recordInterval = setInterval(function() {
       timestamp++;
-      console.log(timestamp);
+      log(timestamp)
     }, 1000);
-    document.addEventListener('keyup', function(event) {
+
+    keyupHandling = function(event) {
+    	event.preventDefault();
       if ((event.keyCode == 13) || (event.keyCode == 32) || (event.keyCode == 40) || (event.keyCode == 34) || (event.keyCode == 39)) {
-        event.preventDefault();
         timingMap.set(timestamp, "next");
       } else if ((event.keyCode == 38) || (event.keyCode == 33) || (event.keyCode == 37)) {
         timingMap.set(timestamp, "prev");
       } else if (event.keyCode == 27) {
         timingMap.set(timestamp, "jump");
       }
-      log(timingMap);
-    });
+      log(timingMap)
+    }
+    document.addEventListener('keyup', keyupHandling);
+
   }).catch(e => {
     console.log("Aucun micro détecté");
     info.innerHTML = "Aucun micro détecté";
@@ -78,6 +82,7 @@ function stopRecording() {
   let info = document.getElementById("infoRecord");
   recorder.stop();
   clearInterval(recordInterval);
+  document.removeEventListener('keyup', keyupHandling);
   stream.getAudioTracks()[0].stop();
   info.innerText = "Stopped";
 
@@ -111,7 +116,7 @@ function createDownloadLink(blob, map) {
     return lo
   }
   map = mapToObjectRec(map);
-  log(map)
+
   jsonlink.href = "data:text/json;charset=utf-8," + JSON.stringify(map);
   jsonlink.download = "actionRecord_" + new Date().toISOString() + ".json";
   jsonlink.innerHTML = "Action File : " + "<span style='color:red'>" + jsonlink.download + "</span>";
@@ -199,7 +204,11 @@ function createRecordBar() {
       startRec.style.color = "red";
     });
     startRec.addEventListener('click', startRecord);
-
+	document.addEventListener('keyup',function(e){
+		if(e.keyCode==65){
+			startRecord();
+		}
+	})
     stopRec.addEventListener('click', stopRecording);
     stopRec.addEventListener('mouseover', function() {
       stopRec.style.color = "#d63031";
@@ -258,6 +267,8 @@ function createRecordBar() {
       initPlay(audioFileUrl.value, jsonFileUrl.value);
     });
   } else {
+  	if(window.location.hash != "" || window.location.hash != undefined)
+  		window.location.search=window.location.hash.replace(window.location.hash.match(/#[0-9]/g),"");
     let urlParam = new URLSearchParams(window.location.search);
     let audioFile = urlParam.get("audio")
     let actionFile = urlParam.get("action")
