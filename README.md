@@ -12,6 +12,7 @@ do not wish to record everything.
 <h1>How to use it ?</h1>
 <h2>Setup :</h2>
 
+
 First, you need to download it. You can get it here. Then, create an HTML file and setup everything needed (You also need to read documentation from transition.js). Once it's done, add this to the **head** of your file:
 
 ```HTML
@@ -40,11 +41,13 @@ document.addEventListener("DOMContentLoaded",function(){
 
 ---
 
-<h4>How to use record & read functions<h4>
+<h4>How to use record and read functions</h4>
 
 Now that everything is setup, load your page and at the bottom of it, you'll see an arrow, click on it and you'll see something like this:
+
 <br><img src="https://puu.sh/FZcXZ/6709150e46.png"/>
 <br>
+
 In this bottom bar, you have two tabs, first is the recording one, with the classical record button, which are (in order): **Start**, **Pause/
 Resume** and **Stop**
 Once you hit the start button, it'll ask permission to use your microphone, once accorded it'll start both recording what you're saying and
@@ -70,7 +73,7 @@ The sliding bar helps to keep track on the time, and you can also go back to ano
 
 ---
 
-<h4>How to use timer functions & add audio reader<h4>
+<h4>How to use timer functions & add audio reader</h4>
 
 If you do not wish to record everything, there is a way to add your own audio files (And add transition.js functions too) without making it yourself (not entirely).
 You will also be able to add timer to your HTML elements.
